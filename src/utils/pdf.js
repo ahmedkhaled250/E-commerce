@@ -1,7 +1,7 @@
-// import axios from "axios";
+import axios from "axios";
 import fs from "fs";
 import PDFDocument from "pdfkit";
-export async function createInvoice(invoice, path) {
+export async function createInvoice(invoice) {
   let doc = new PDFDocument({ size: "A4", margin: 50 });
 
   generateHeader(doc);
@@ -10,18 +10,17 @@ export async function createInvoice(invoice, path) {
   generateFooter(doc);
 
   doc.end();
-  doc.pipe(fs.createWriteStream(path));
 }
-// async function fetchImage(src) {
-//   const image = await axios.get(src, {
-//     responseType: "arraybuffer",
-//   });
-//   return image.data;
-// }
-// const logo = await fetchImage("https://res.cloudinary.com/dlub8w5jc/image/upload/v1704205198/E-commerce/logo/logo_k7li19.jpg");
+async function fetchImage(src) {
+  const image = await axios.get(src, {
+    responseType: "arraybuffer",
+  });
+  return image.data;
+}
+const logo = await fetchImage("https://res.cloudinary.com/dlub8w5jc/image/upload/v1704205198/E-commerce/logo/logo_k7li19.jpg");
 function generateHeader(doc) {
-  // .image(logo, 50, 45, { width: 50 })
   doc
+  .image(logo, 50, 45, { width: 50 })
   .fillColor("#444")
     .fontSize(20)
     .text("Route", 110, 57)
