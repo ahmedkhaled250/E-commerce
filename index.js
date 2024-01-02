@@ -1,6 +1,6 @@
 import express from "express";
-import path from "path";
 import "./src/utils/passportSetup.js";
+import path from "path";
 import { fileURLToPath } from "url";
 import dotenv from "dotenv";
 import bootstrap from "./src/modules/index.router.js";
