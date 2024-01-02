@@ -127,7 +127,7 @@ export const addOrder = asyncHandler(async (req, res, next) => {
     date: order.createdAt,
     invoice_nr: order.phone,
   };
-  await createInvoice(invoice);
+  await createInvoice(invoice,"invoice.pdf");
   await sendEmail({
     to: user.email,
     subject: "invoice",

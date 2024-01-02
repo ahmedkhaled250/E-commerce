@@ -1,7 +1,7 @@
 import axios from "axios";
 import fs from "fs";
 import PDFDocument from "pdfkit";
-export async function createInvoice(invoice) {
+export async function createInvoice(invoice, path) {
   let doc = new PDFDocument({ size: "A4", margin: 50 });
 
   generateHeader(doc);
@@ -10,6 +10,7 @@ export async function createInvoice(invoice) {
   generateFooter(doc);
 
   doc.end();
+  doc.pipe(fs.createWriteStream(path));
 }
 async function fetchImage(src) {
   const image = await axios.get(src, {
