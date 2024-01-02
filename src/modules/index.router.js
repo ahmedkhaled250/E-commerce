@@ -25,8 +25,13 @@ const bootstrap = (app, express) => {
   // app.use(passport.initialize());
   // app.use(passport.session());
   // Convert beffer data
-  app.use(express.json());
-  app.use(express.urlencoded({ extended: true }));
+  app.use((req, res, next) => {
+    if (req.originalUrl == "/order/webhook") {
+      next();
+    } else {
+      express.json()(req, res, next);
+    }
+  });
   // Setup cors
   app.use(cors());
   // morgan check error

@@ -111,7 +111,7 @@ import { compare, encrypt, hash } from "../../../utils/HashAndCompare.js";
 // });
 export const signup = asyncHandler(async (req, res, next) => {
   const { userName, password, phone, gender, address, role, DOB } = req.body;
-  const email = req.body.toLowerCase();
+  const email = req.body.email.toLowerCase();
   const user = await findOne({
     model: userModel,
     condition: { email },

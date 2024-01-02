@@ -3,7 +3,9 @@ import { asyncHandler } from "../../../utils/errorHandling.js";
 import cloudinary from "../../../utils/cloudinary.js";
 import {
   create,
+  find,
   findById,
+  findOne,
   findOneAndUpdate,
 } from "../../../../DB/DBMethods.js";
 import categoryModel from "../../../../DB/models/Category.js";

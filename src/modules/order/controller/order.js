@@ -4,6 +4,7 @@ import {
   create,
   findByIdAndUpdate,
   findOne,
+  findOneAndUpdate,
   updateOne,
 } from "../../../../DB/DBMethods.js";
 import productModel from "../../../../DB/models/Product.js";
@@ -12,6 +13,8 @@ import orderModel from "../../../../DB/models/Order.js";
 import cartModel from "../../../../DB/models/Cart.js";
 import ApiFeatures from "../../../utils/apiFeatures.js";
 import sendEmail from "../../../utils/sendEmail.js";
+import Stripe from "stripe";
+import payment from "../../../utils/payment.js";
 
 export const addOrder = asyncHandler(async (req, res, next) => {
   const { user } = req;
@@ -30,15 +33,15 @@ export const addOrder = asyncHandler(async (req, res, next) => {
     req.body.isCart = true;
     req.body.products = cart.products;
   }
-  let coupon;
   if (couponName) {
-    coupon = await findOne({
+    const coupon = await findOne({
       model: couponModel,
       condition: { name: couponName.toLowerCase(), usedBy: { $nin: user._id } },
     });
     if (!coupon || coupon.expireDate.getTime() < Date.now()) {
       return next(new Error("In-valid or expired coupon", { cause: 404 }));
     }
+    req.body.coupon = coupon;
   }
   let subtotalPrice = 0;
   const finalProducts = [];
@@ -71,9 +74,9 @@ export const addOrder = asyncHandler(async (req, res, next) => {
   }
   req.body.products = finalProducts;
   req.body.subtotalPrice = subtotalPrice;
-  req.body.couponId = coupon?._id;
+  req.body.couponId = req.body.coupon?._id;
   req.body.finalPrice =
-    subtotalPrice - subtotalPrice * ((coupon?.amount || 0) / 100);
+    subtotalPrice - subtotalPrice * ((req.body.coupon?.amount || 0) / 100);
   req.body.userId = user._id;
   req.body.status = paymentMethod == "card" ? "waitPayment" : "placed";
   const order = await create({ model: orderModel, data: req.body });
@@ -92,13 +95,6 @@ export const addOrder = asyncHandler(async (req, res, next) => {
       },
     });
   }
-  if (couponName) {
-    await findByIdAndUpdate({
-      model: couponModel,
-      condition: coupon._id,
-      data: { $push: { usedBy: user._id } },
-    });
-  }
   if (req.body.isCart) {
     await updateOne({
       model: cartModel,
@@ -110,6 +106,13 @@ export const addOrder = asyncHandler(async (req, res, next) => {
       model: cartModel,
       condition: { userId: user._id },
       data: { $pull: { products: { productId: { $in: productsIds } } } },
+    });
+  }
+  if (req.body.coupon) {
+    await findByIdAndUpdate({
+      model: couponModel,
+      condition: req.body.coupon._id,
+      data: { $push: { usedBy: user._id } },
     });
   }
   const invoice = {
@@ -137,6 +140,39 @@ export const addOrder = asyncHandler(async (req, res, next) => {
       },
     ],
   });
+  if (order.paymentMethod == "card") {
+    const stripe = new Stripe(process.env.STRIPE_KEY);
+    if (req.body.coupon) {
+      const coupon = await stripe.coupons.create({
+        percent_off: req.body.coupon.amount,
+        duration: "once",
+      });
+      req.body.couponId = coupon.id;
+    }
+    const session = await payment({
+      stripe,
+      payment_method_types: ["card"],
+      mode: "payment",
+      customer_email: user.email,
+      cancel_url: `${process.env.CENCEL_URL}/${order._id}`,
+      success_url: `${process.env.SUCCESS_URL}/${order._id}`,
+      metadata: { orderId: order._id.toString() },
+      discounts: req.body.couponId ? [{ coupon: req.body.couponId }] : [],
+      line_items: order.products.map((product) => {
+        return {
+          price_data: {
+            currency: "usd",
+            product_data: {
+              name: product.name,
+            },
+            unit_amount: product.unitePrice * 100,
+          },
+          quantity: product.quantity,
+        };
+      }),
+    });
+    return res.status(201).json({ message: "Done", session, url: session.url });
+  }
   return res.status(201).json({ message: "Done" });
 });
 export const cencelOrder = asyncHandler(async (req, res, next) => {
@@ -179,7 +215,7 @@ export const cencelOrder = asyncHandler(async (req, res, next) => {
   if (order.couponId) {
     await updateOne({
       model: couponModel,
-      condition: { userId: user._id },
+      condition: { usedBy: user._id },
       data: { $pull: { usedBy: user._id } },
     });
   }
@@ -215,4 +251,53 @@ export const userOrders = asyncHandler(async (req, res, next) => {
     return next(new Error("In-valid orders", { cause: 404 }));
   }
   return res.status(200).json({ message: "Done", orders });
+});
+export const webhook = asyncHandler(async (req, res, next) => {
+  const sig = req.headers["stripe-signature"];
+  const stripe = new Stripe(process.env.STRIPE_KEY);
+  let event;
+  try {
+    event = stripe.webhooks.constructEvent(
+      req.body,
+      sig,
+      process.env.endpointSecret
+    );
+  } catch (err) {
+    return next(new Error(`Webhook Error: ${err.message}`, { cause: 400 }));
+  }
+  // Handle the event
+  const { orderId } = event.data.object.metadata;
+  if (event.type != "checkout.session.completed") {
+    const order = await findByIdAndUpdate({
+      model: orderModel,
+      condition: orderId,
+      data: { status: "rejected" },
+    });
+    for (const product of order.products) {
+      await updateOne({
+        model: productModel,
+        condition: { _id: product.productId },
+        data: {
+          $inc: {
+            soldItems: -parseInt(product.quantity),
+            stock: parseInt(product.quantity),
+          },
+        },
+      });
+    }
+    if (order.couponId) {
+      await updateOne({
+        model: couponModel,
+        condition: { _id: order.couponId },
+        data: { $pull: { usedBy: user._id } },
+      });
+    }
+    return next(new Error("Rejected order", { cause: 400 }));
+  }
+  await updateOne({
+    model: orderModel,
+    condition: { _id: orderId },
+    data: { status: "placed" },
+  });
+  return res.status(200).json({ message: "Done" });
 });

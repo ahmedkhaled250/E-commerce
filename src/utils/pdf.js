@@ -25,7 +25,6 @@ function generateHeader(doc) {
     .text("Cairo Egypt", 200, 80, { align: "right" })
     .moveDown();
 }
-
 function generateCustomerInformation(doc, invoice) {
   doc.fillColor("#444444").fontSize(20).text("Invoice", 50, 160);
 

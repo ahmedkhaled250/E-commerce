@@ -1,9 +1,7 @@
 import {
   find,
   findById,
-  findByIdAndUpdate,
   findOne,
-  updateOne,
 } from "../../../../DB/DBMethods.js";
 import userModel from "../../../../DB/models/User.js";
 import { compare, hash } from "../../../utils/HashAndCompare.js";
