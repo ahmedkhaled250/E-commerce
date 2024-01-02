@@ -128,16 +128,16 @@ export const addOrder = asyncHandler(async (req, res, next) => {
   //   invoice_nr: order.phone,
   // };
   // await createInvoice(invoice, "invoice.pdf");
-  await sendEmail({
-    to: user.email,
-    subject: "invoice",
-    attachments: [
-      {
-        path: "invoice.pdf",
-        contentType: "application/pdf",
-      },
-    ],
-  });
+  // await sendEmail({
+  //   to: user.email,
+  //   subject: "invoice",
+  //   attachments: [
+  //     {
+  //       path: "invoice.pdf",
+  //       contentType: "application/pdf",
+  //     },
+  //   ],
+  // });
   if (order.paymentMethod == "card") {
     const stripe = new Stripe(process.env.STRIPE_KEY);
     if (req.body.coupon) {
