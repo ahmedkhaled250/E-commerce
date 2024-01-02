@@ -171,7 +171,7 @@ export const addOrder = asyncHandler(async (req, res, next) => {
         };
       }),
     });
-    return res.status(201).json({ message: "Done", session, url: session.url });
+    return res.status(201).json({ message: "Done", url: session.url });
   }
   return res.status(201).json({ message: "Done" });
 });

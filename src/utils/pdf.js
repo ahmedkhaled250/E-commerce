@@ -15,7 +15,7 @@ export async function createInvoice(invoice, path) {
 
 function generateHeader(doc) {
   doc
-    .image("logo.jpg", 50, 45, { width: 50 })
+    .image(process.env.logoPdf, 50, 45, { width: 50 })
     .fillColor("#444")
     .fontSize(20)
     .text("Route", 110, 57)
@@ -27,11 +27,8 @@ function generateHeader(doc) {
 }
 function generateCustomerInformation(doc, invoice) {
   doc.fillColor("#444444").fontSize(20).text("Invoice", 50, 160);
-
   generateHr(doc, 185);
-
   const customerInformationTop = 200;
-
   doc
     .fontSize(10)
     .text("Invoice Number:", 50, customerInformationTop)
