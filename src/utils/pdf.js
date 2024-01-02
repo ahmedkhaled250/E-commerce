@@ -18,11 +18,13 @@ async function fetchImage(src) {
   });
   return image.data;
 }
-const logo = await fetchImage("https://res.cloudinary.com/dlub8w5jc/image/upload/v1704205198/E-commerce/logo/logo_k7li19.jpg");
+const logo = await fetchImage(
+  "https://res.cloudinary.com/dlub8w5jc/image/upload/v1704205198/E-commerce/logo/logo_k7li19.jpg"
+);
 function generateHeader(doc) {
   doc
-  .image(logo, 50, 45, { width: 50 })
-  .fillColor("#444")
+    .image(logo, 50, 45, { width: 50 })
+    .fillColor("#444")
     .fontSize(20)
     .text("Route", 110, 57)
     .fontSize(10)
