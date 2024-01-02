@@ -1,19 +1,28 @@
+import axios from "axios";
 import fs from "fs";
 import PDFDocument from "pdfkit";
 export async function createInvoice(invoice, path) {
   let doc = new PDFDocument({ size: "A4", margin: 50 });
-  
+
   generateHeader(doc);
   generateCustomerInformation(doc, invoice);
   generateInvoiceTable(doc, invoice);
   generateFooter(doc);
-  
+
   doc.end();
   doc.pipe(fs.createWriteStream(path));
 }
+async function fetchImage(src) {
+  const image = await axios.get(src, {
+    responseType: "arraybuffer",
+  });
+  return image.data;
+}
+
+const logo = await fetchImage(process.env.logoPdf);
 function generateHeader(doc) {
   doc
-    .image( "logo.jpg", 50, 45, { width: 50 })
+    .image(logo, 50, 45, { width: 50 })
     .fillColor("#444")
     .fontSize(20)
     .text("Route", 110, 57)
