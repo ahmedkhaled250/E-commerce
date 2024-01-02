@@ -18,8 +18,7 @@ async function fetchImage(src) {
   });
   return image.data;
 }
-
-const logo = await fetchImage(process.env.logoPdf);
+const logo = await fetchImage("https://res.cloudinary.com/dlub8w5jc/image/upload/v1704205198/E-commerce/logo/logo_k7li19.jpg");
 function generateHeader(doc) {
   doc
     .image(logo, 50, 45, { width: 50 })
