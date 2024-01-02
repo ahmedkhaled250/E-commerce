@@ -1,5 +1,5 @@
 import { asyncHandler } from "../../../utils/errorHandling.js";
-import { createInvoice } from "../../../utils/pdf.js";
+// import { createInvoice } from "../../../utils/pdf.js";
 import {
   create,
   findByIdAndUpdate,
@@ -113,21 +113,21 @@ export const addOrder = asyncHandler(async (req, res, next) => {
       data: { $push: { usedBy: user._id } },
     });
   }
-  const invoice = {
-    shipping: {
-      name: user.userName,
-      address: order.address,
-      city: "Cairo",
-      state: "aul makram streat",
-      country: "Egypt",
-    },
-    items: order.products,
-    subtotal: subtotalPrice,
-    total: order.finalPrice,
-    date: order.createdAt,
-    invoice_nr: order.phone,
-  };
-  await createInvoice(invoice, "invoice.pdf");
+  // const invoice = {
+  //   shipping: {
+  //     name: user.userName,
+  //     address: order.address,
+  //     city: "Cairo",
+  //     state: "aul makram streat",
+  //     country: "Egypt",
+  //   },
+  //   items: order.products,
+  //   subtotal: subtotalPrice,
+  //   total: order.finalPrice,
+  //   date: order.createdAt,
+  //   invoice_nr: order.phone,
+  // };
+  // await createInvoice(invoice, "invoice.pdf");
   await sendEmail({
     to: user.email,
     subject: "invoice",
