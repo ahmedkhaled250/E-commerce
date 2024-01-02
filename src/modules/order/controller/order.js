@@ -4,7 +4,6 @@ import {
   create,
   findByIdAndUpdate,
   findOne,
-  findOneAndUpdate,
   updateOne,
 } from "../../../../DB/DBMethods.js";
 import productModel from "../../../../DB/models/Product.js";
@@ -15,7 +14,6 @@ import ApiFeatures from "../../../utils/apiFeatures.js";
 import sendEmail from "../../../utils/sendEmail.js";
 import Stripe from "stripe";
 import payment from "../../../utils/payment.js";
-
 export const addOrder = asyncHandler(async (req, res, next) => {
   const { user } = req;
   const { couponName, paymentMethod } = req.body;
