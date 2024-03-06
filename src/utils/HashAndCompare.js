@@ -15,3 +15,10 @@ export const encrypt = ({ phone, key = process.env.ENCRYPTION_KEY } = {}) => {
   const encryptedPhone = CryptoJS.AES.encrypt(phone, key).toString();
   return encryptedPhone
 };
+export const decrypt = ({
+  encryptedPhone,
+  key = process.env.ENCRYPTION_KEY,
+} = {}) => {
+  let decrypted = CryptoJS.AES.decrypt(encryptedPhone, key);
+  return decrypted.toString(CryptoJS.enc.Utf8);
+};

@@ -35,7 +35,11 @@ const userSchema = new Schema(
       default: "normal",
     },
     socialId: String,
-    gender: String,
+    gender: {
+      type: String,
+      default: "Male",
+      enum: ["Female", "Male"],
+    },
     DOB: Date,
     status: {
       type: String,

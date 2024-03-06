@@ -11,6 +11,32 @@ export const token = joi
     authorization: generalFields.headers,
   })
   .required()
+  export const updateUser = joi
+    .object({
+      userName: joi.string().min(2).max(20).message({
+        "any.required": "userName is required",
+        "any.empty": "empty userName isn't acceptable",
+      }),
+      email: joi
+        .string()
+        .email({
+          minDomainSegments: 2,
+          maxDomainSegments: 4,
+          tlds: { allow: ["com", "net"] },
+        })
+        .messages({
+          "any.required": "Email is required",
+          "string.empty": "not allowed to be empty",
+          "string.base": "only string is allowed",
+          "string.email": "please enter realy email",
+        }),
+      phone: joi.string().pattern(/^01[0125][0-9]{8}$/),
+      gender: joi.string(),
+      address: joi.string(),
+      DOB: joi.date(),
+      authorization: generalFields.headers,
+    })
+    .required();
 export const updatePassword = joi
   .object({
     oldPassword: generalFields.password,

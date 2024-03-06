@@ -5,7 +5,7 @@ const paginate = ({ page = 1, size = 2 } = {}) => {
   if (size <= 0) {
     size = 2;
   }
-  const skip = (parseInt(page) - 1) * parseInt(size);
+  const skip = (parseInt(page) - 1) * parseInt(size)
   return { limit: parseInt(size), skip };
 };
 export default paginate;

@@ -21,7 +21,7 @@ export const signup = joi
     address: joi.string(),
     DOB: joi.date(),
   })
-  .required()
+  .required();
 export const signin = joi
   .object({
     email: generalFields.email.messages({
@@ -32,12 +32,12 @@ export const signin = joi
     }),
     password: generalFields.password,
   })
-  .required()
+  .required();
 export const confirmEmail = joi
   .object({
     token: joi.string().required(),
   })
-  .required()
+  .required();
 export const sendCode = joi
   .object({
     email: generalFields.email.messages({
@@ -47,7 +47,7 @@ export const sendCode = joi
       "string.email": "please enter realy email",
     }),
   })
-  .required()
+  .required();
 export const forgetPassword = joi
   .object({
     email: generalFields.email.messages({
@@ -60,4 +60,4 @@ export const forgetPassword = joi
     password: generalFields.password,
     cPassword: generalFields.cPassword.valid(joi.ref("password")),
   })
-  .required()
+  .required();
