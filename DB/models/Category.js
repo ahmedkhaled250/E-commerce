@@ -6,7 +6,7 @@ const categorySchema = new Schema(
       type: String,
       required: [true, "userName is required"],
       min: [2, "minimum length 2 char"],
-      max: [20, "max length 2 char"],
+      max: [50, "max length 2 char"],
       unique: [true, "name must be unique value"],
       lowercase: true,
     },

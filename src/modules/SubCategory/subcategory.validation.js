@@ -2,7 +2,7 @@ import joi from "joi";
 import { generalFields } from "../../middleware/validation.js";
 export const createSubcategory = joi
   .object({
-    name: joi.string().min(2).max(20).required(),
+    name: joi.string().min(2).max(50).required(),
     categoryId: generalFields.id,
     authorization: generalFields.headers,
     file: generalFields.file.required(),
@@ -10,7 +10,7 @@ export const createSubcategory = joi
   .required()
 export const updateSubcategory = joi
   .object({
-    name: joi.string().min(2).max(20),
+    name: joi.string().min(2).max(50),
     file: generalFields.file,
     id: generalFields.id,
     categoryId: generalFields.id,
