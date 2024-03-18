@@ -10,9 +10,7 @@ const userSchema = new Schema(
       lowercase: true,
     },
     email: {
-      type: String,
-      unique: [true, "email must be unique value"],
-      lowercase: true,
+
     },
     password: String,
     phone: {
@@ -46,10 +44,10 @@ const userSchema = new Schema(
       default: "offline",
       enum: ["offline", "online", "blocked"],
     },
-    confirmEmail: {
-      type: Boolean,
-      default: false,
-    },
+    // confirmEmail: {
+    //   type: Boolean,
+    //   default: false,
+    // },
     deleted: {
       type: Boolean,
       default: false,

@@ -143,9 +143,45 @@ export const subCategories = asyncHandler(async (req, res, next) => {
       path: "categoryId",
       select: "name image",
     },
+    {
+      path: "Product",
+      select: "name mainImage description stock price discound finalPrice",
+    },
   ];
   const subCategories = await find({
     model: subcategoryModel,
+    populate,
+    skip,
+    limit,
+  });
+  if (!subCategories.length) {
+    return next(new Error("In-valid subcategory", { cause: 404 }));
+  }
+  return res.status(200).json({ message: "Done", subCategories });
+});
+export const subCategoryByCategoryId = asyncHandler(async (req, res, next) => {
+  const {categoryId}=req.params
+  const { skip, limit } = paginate({
+    page: req.query.page,
+    size: req.query.size,
+  });
+  const populate = [
+    {
+      path: "createdBy",
+      select: "userName email image",
+    },
+    {
+      path: "categoryId",
+      select: "name image",
+    },
+    {
+      path: "products",
+      select: "name mainImage description stock price discound finalPrice",
+    },
+  ];
+  const subCategories = await find({
+    model: subcategoryModel,
+    condition:{categoryId},
     populate,
     skip,
     limit,
@@ -165,6 +201,10 @@ export const getSubcategoryById = asyncHandler(async (req, res, next) => {
     {
       path: "categoryId",
       select: "name image",
+    },
+    {
+      path: "Product",
+      select: "name mainImage description stock price discound finalPrice",
     },
   ];
   const subcategory = await findById({

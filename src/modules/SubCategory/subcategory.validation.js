@@ -23,6 +23,13 @@ export const subCategories = joi
     size: joi.number(),
   })
   .required()
+export const subCategoryByCategoryId = joi
+  .object({
+    categoryId:generalFields.id,
+    page: joi.number(),
+    size: joi.number(),
+  })
+  .required();
 export const getSubcategoryById = joi
   .object({
     id: generalFields.id,

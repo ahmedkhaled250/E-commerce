@@ -7,7 +7,7 @@ import { asyncHandler } from "../../../utils/errorHandling.js";
 import {
   create,
   findOne,
-  findOneAndUpdate,
+  // findOneAndUpdate,
   // updateOne,
 } from "../../../../DB/DBMethods.js";
 import {
@@ -120,125 +120,125 @@ export const signup = asyncHandler(async (req, res, next) => {
   if (user) {
     return next(new Error("Email exist", { cause: 409 }));
   }
-  const token = generateToken({
-    payload: { email },
-    signature: process.env.EMAILTOKEN,
-    expiresIn: 60 * 5,
-  });
-  const refreshToken = generateToken({
-    payload: { email },
-    signature: process.env.EMAILTOKEN,
-    expiresIn: 60 * 60 * 24,
-  });
+  // const token = generateToken({
+  //   payload: { email },
+  //   signature: process.env.EMAILTOKEN,
+  //   expiresIn: 60 * 5,
+  // });
+  // const refreshToken = generateToken({
+  //   payload: { email },
+  //   signature: process.env.EMAILTOKEN,
+  //   expiresIn: 60 * 60 * 24,
+  // });
 
-  const link = `${req.protocol}://${req.headers.host}/auth/confirmEmail/${token}`;
-  const rfLink = `${req.protocol}://${req.headers.host}/auth/refreshEmail/${refreshToken}`;
+  // const link = `${req.protocol}://${req.headers.host}/auth/confirmEmail/${token}`;
+  // const rfLink = `${req.protocol}://${req.headers.host}/auth/refreshEmail/${refreshToken}`;
 
-  const message = `<!DOCTYPE html>
-  <html>
-  <head>
-      <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"></head>
-  <style type="text/css">
-  body{background-color: #88BDBF;margin: 0px;}
-  </style>
-  <body style="margin:0px;"> 
-  <table border="0" width="50%" style="margin:auto;padding:30px;background-color: #F3F3F3;border:1px solid #630E2B;">
-  <tr>
-  <td>
-  <table border="0" width="100%">
-  <tr>
-  <td>
-  <h1>
-      <img width="100px" src="https://res.cloudinary.com/ddajommsw/image/upload/v1670702280/Group_35052_icaysu.png"/>
-  </h1>
-  </td>
-  <td>
-  <p style="text-align: right;"><a href="http://localhost:4200/#/" target="_blank" style="text-decoration: none;">View In Website</a></p>
-  </td>
-  </tr>
-  </table>
-  </td>
-  </tr>
-  <tr>
-  <td>
-  <table border="0" cellpadding="0" cellspacing="0" style="text-align:center;width:100%;background-color: #fff;">
-  <tr>
-  <td style="background-color:#630E2B;height:100px;font-size:50px;color:#fff;">
-  <img width="50px" height="50px" src="${process.env.logo}">
-  </td>
-  </tr>
-  <tr>
-  <td>
-  <h1 style="padding-top:25px; color:#630E2B">Email Confirmation</h1>
-  </td>
-  </tr>
-  <tr>
-  <td>
-  <p style="padding:0px 100px;">
-  </p>
-  </td>
-  </tr>
-  <tr>
-  <td>
-  <a href="${link}" style="margin:10px 0px 30px 0px;border-radius:4px;padding:10px 20px;border: 0;color:#fff;background-color:#630E2B; ">Verify Email address</a>
-  </td>
-  </tr>
-  <tr>
-  <td>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <a href="${rfLink}" style="margin:10px 0px 30px 0px;border-radius:4px;padding:10px 20px;border: 0;color:#fff;background-color:#630E2B; ">Request new  email </a>
-  </td>
-  </tr>
-  </table>
-  </td>
-  </tr>
-  <tr>
-  <td>
-  <table border="0" width="100%" style="border-radius: 5px;text-align: center;">
-  <tr>
-  <td>
-  <h3 style="margin-top:10px; color:#000">Stay in touch</h3>
-  </td>
-  </tr>
-  <tr>
-  <td>
-  <div style="margin-top:20px;">
+  // const message = `<!DOCTYPE html>
+  // <html>
+  // <head>
+  //     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"></head>
+  // <style type="text/css">
+  // body{background-color: #88BDBF;margin: 0px;}
+  // </style>
+  // <body style="margin:0px;">
+  // <table border="0" width="50%" style="margin:auto;padding:30px;background-color: #F3F3F3;border:1px solid #630E2B;">
+  // <tr>
+  // <td>
+  // <table border="0" width="100%">
+  // <tr>
+  // <td>
+  // <h1>
+  //     <img width="100px" src="https://res.cloudinary.com/ddajommsw/image/upload/v1670702280/Group_35052_icaysu.png"/>
+  // </h1>
+  // </td>
+  // <td>
+  // <p style="text-align: right;"><a href="http://localhost:4200/#/" target="_blank" style="text-decoration: none;">View In Website</a></p>
+  // </td>
+  // </tr>
+  // </table>
+  // </td>
+  // </tr>
+  // <tr>
+  // <td>
+  // <table border="0" cellpadding="0" cellspacing="0" style="text-align:center;width:100%;background-color: #fff;">
+  // <tr>
+  // <td style="background-color:#630E2B;height:100px;font-size:50px;color:#fff;">
+  // <img width="50px" height="50px" src="${process.env.logo}">
+  // </td>
+  // </tr>
+  // <tr>
+  // <td>
+  // <h1 style="padding-top:25px; color:#630E2B">Email Confirmation</h1>
+  // </td>
+  // </tr>
+  // <tr>
+  // <td>
+  // <p style="padding:0px 100px;">
+  // </p>
+  // </td>
+  // </tr>
+  // <tr>
+  // <td>
+  // <a href="${link}" style="margin:10px 0px 30px 0px;border-radius:4px;padding:10px 20px;border: 0;color:#fff;background-color:#630E2B; ">Verify Email address</a>
+  // </td>
+  // </tr>
+  // <tr>
+  // <td>
+  // <br>
+  // <br>
+  // <br>
+  // <br>
+  // <br>
+  // <br>
+  // <br>
+  // <br>
+  // <a href="${rfLink}" style="margin:10px 0px 30px 0px;border-radius:4px;padding:10px 20px;border: 0;color:#fff;background-color:#630E2B; ">Request new  email </a>
+  // </td>
+  // </tr>
+  // </table>
+  // </td>
+  // </tr>
+  // <tr>
+  // <td>
+  // <table border="0" width="100%" style="border-radius: 5px;text-align: center;">
+  // <tr>
+  // <td>
+  // <h3 style="margin-top:10px; color:#000">Stay in touch</h3>
+  // </td>
+  // </tr>
+  // <tr>
+  // <td>
+  // <div style="margin-top:20px;">
 
-  <a href="${process.env.facebookLink}" style="text-decoration: none;"><span class="twit" style="padding:10px 9px;color:#fff;border-radius:50%;">
-  <img src="https://res.cloudinary.com/ddajommsw/image/upload/v1670703402/Group35062_erj5dx.png" width="50px" hight="50px"></span></a>
-  
-  <a href="${process.env.instegram}" style="text-decoration: none;"><span class="twit" style="padding:10px 9px;color:#fff;border-radius:50%;">
-  <img src="https://res.cloudinary.com/ddajommsw/image/upload/v1670703402/Group35063_zottpo.png" width="50px" hight="50px"></span>
-  </a>
-  
-  <a href="${process.env.twitterLink}" style="text-decoration: none;"><span class="twit" style="padding:10px 9px;;color:#fff;border-radius:50%;">
-  <img src="https://res.cloudinary.com/ddajommsw/image/upload/v1670703402/Group_35064_i8qtfd.png" width="50px" hight="50px"></span>
-  </a>
+  // <a href="${process.env.facebookLink}" style="text-decoration: none;"><span class="twit" style="padding:10px 9px;color:#fff;border-radius:50%;">
+  // <img src="https://res.cloudinary.com/ddajommsw/image/upload/v1670703402/Group35062_erj5dx.png" width="50px" hight="50px"></span></a>
 
-  </div>
-  </td>
-  </tr>
-  </table>
-  </td>
-  </tr>
-  </table>
-  </body>
-  </html>`;
-  const info = await sendEmail({
-    to: email,
-    subject: "Confirmation-Email",
-    message,
-  });
-  if (!info) {
-    return next(new Error("Email rejected", { cause: 400 }));
-  }
+  // <a href="${process.env.instegram}" style="text-decoration: none;"><span class="twit" style="padding:10px 9px;color:#fff;border-radius:50%;">
+  // <img src="https://res.cloudinary.com/ddajommsw/image/upload/v1670703402/Group35063_zottpo.png" width="50px" hight="50px"></span>
+  // </a>
+
+  // <a href="${process.env.twitterLink}" style="text-decoration: none;"><span class="twit" style="padding:10px 9px;;color:#fff;border-radius:50%;">
+  // <img src="https://res.cloudinary.com/ddajommsw/image/upload/v1670703402/Group_35064_i8qtfd.png" width="50px" hight="50px"></span>
+  // </a>
+
+  // </div>
+  // </td>
+  // </tr>
+  // </table>
+  // </td>
+  // </tr>
+  // </table>
+  // </body>
+  // </html>`;
+  // const info = await sendEmail({
+  //   to: email,
+  //   subject: "Confirmation-Email",
+  //   message,
+  // });
+  // if (!info) {
+  //   return next(new Error("Email rejected", { cause: 400 }));
+  // }
   const hashPassword = hash({ plaintext: password });
   const encryptedPhone = encrypt({ phone });
   const newUser = await create({
@@ -254,152 +254,153 @@ export const signup = asyncHandler(async (req, res, next) => {
       DOB,
     },
   });
-  return res.status(201).json({ message: "Done", userId: newUser._id });
+  return res.status(201).redirect()
+  // return res.status(201).json({ message: "Done", userId: newUser._id });
 });
-export const confirmEmail = asyncHandler(async (req, res, next) => {
-  const { token } = req.params;
-  const decoded = verifyToken({ token, signature: process.env.EMAILTOKEN });
-  if (!decoded?.email) {
-    return next(new Error("In-valid token payload", { cause: 400 }));
-  }
-  const user = await findOneAndUpdate({
-    model: userModel,
-    condition: { email: decoded.email, confirmEmail: false },
-    data: { confirmEmail: true },
-  });
-  if (!user) {
-    return next(new Error("Already your account is confirmed", { cause: 400 }));
-  }
-  return res.status(200).json({ message: "Done" });
-});
-export const refreshEmail = asyncHandler(async (req, res, next) => {
-  const { token } = req.params;
-  const decoded = verifyToken({ token, signature: process.env.EMAILTOKEN });
-  if (!decoded?.email) {
-    return next(new Error("Invalid token payload", { cause: 400 }));
-  }
-  const user = await findOne({
-    model: userModel,
-    condition: { email: decoded.email },
-  });
-  if (user.confirmEmail) {
-    return next(new Error("Already confirmed", { cause: 400 }));
-  }
-  const newToken = generateToken({
-    payload: { email: decoded.email },
-    signature: process.env.EMAILTOKEN,
-    expiresIn: 60 * 2,
-  });
+// export const confirmEmail = asyncHandler(async (req, res, next) => {
+//   const { token } = req.params;
+//   const decoded = verifyToken({ token, signature: process.env.EMAILTOKEN });
+//   if (!decoded?.email) {
+//     return next(new Error("In-valid token payload", { cause: 400 }));
+//   }
+//   const user = await findOneAndUpdate({
+//     model: userModel,
+//     condition: { email: decoded.email, confirmEmail: false },
+//     data: { confirmEmail: true },
+//   });
+//   if (!user) {
+//     return next(new Error("Already your account is confirmed", { cause: 400 }));
+//   }
+//   return res.status(200).json({ message: "Done" });
+// });
+// export const refreshEmail = asyncHandler(async (req, res, next) => {
+//   const { token } = req.params;
+//   const decoded = verifyToken({ token, signature: process.env.EMAILTOKEN });
+//   if (!decoded?.email) {
+//     return next(new Error("Invalid token payload", { cause: 400 }));
+//   }
+//   const user = await findOne({
+//     model: userModel,
+//     condition: { email: decoded.email },
+//   });
+//   if (user.confirmEmail) {
+//     return next(new Error("Already confirmed", { cause: 400 }));
+//   }
+//   const newToken = generateToken({
+//     payload: { email: decoded.email },
+//     signature: process.env.EMAILTOKEN,
+//     expiresIn: 60 * 2,
+//   });
 
-  const link = `${req.protocol}://${req.headers.host}/auth/confirmEmail/${newToken}`;
-  const rfLink = `${req.protocol}://${req.headers.host}/auth/refreshEmail/${token}`;
-  const message = `<!DOCTYPE html>
-    <html>
-    <head>
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"></head>
-    <style type="text/css">
-    body{background-color: #88BDBF;margin: 0px;}
-    </style>
-    <body style="margin:0px;"> 
-    <table border="0" width="50%" style="margin:auto;padding:30px;background-color: #F3F3F3;border:1px solid #630E2B;">
-    <tr>
-    <td>
-    <table border="0" width="100%">
-    <tr>
-    <td>
-    <h1>
-        <img width="100px" src="https://res.cloudinary.com/ddajommsw/image/upload/v1670702280/Group_35052_icaysu.png"/>
-    </h1>
-    </td>
-    <td>
-    <p style="text-align: right;"><a href="http://localhost:4200/#/" target="_blank" style="text-decoration: none;">View In Website</a></p>
-    </td>
-    </tr>
-    </table>
-    </td>
-    </tr>
-    <tr>
-    <td>
-    <table border="0" cellpadding="0" cellspacing="0" style="text-align:center;width:100%;background-color: #fff;">
-    <tr>
-    <td style="background-color:#630E2B;height:100px;font-size:50px;color:#fff;">
-    <img width="50px" height="50px" src="${process.env.logo}">
-    </td>
-    </tr>
-    <tr>
-    <td>
-    <h1 style="padding-top:25px; color:#630E2B">Email Confirmation</h1>
-    </td>
-    </tr>
-    <tr>
-    <td>
-    <p style="padding:0px 100px;">
-    </p>
-    </td>
-    </tr>
-    <tr>
-    <td>
-    <a href="${link}" style="margin:10px 0px 30px 0px;border-radius:4px;padding:10px 20px;border: 0;color:#fff;background-color:#630E2B; ">Verify Email address</a>
-    </td>
-    </tr>
-    <tr>
-    <td>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <a href="${rfLink}" style="margin:10px 0px 30px 0px;border-radius:4px;padding:10px 20px;border: 0;color:#fff;background-color:#630E2B; ">Request new  email </a>
-    </td>
-    </tr>
-    </table>
-    </td>
-    </tr>
-    <tr>
-    <td>
-    <table border="0" width="100%" style="border-radius: 5px;text-align: center;">
-    <tr>
-    <td>
-    <h3 style="margin-top:10px; color:#000">Stay in touch</h3>
-    </td>
-    </tr>
-    <tr>
-    <td>
-    <div style="margin-top:20px;">
+//   const link = `${req.protocol}://${req.headers.host}/auth/confirmEmail/${newToken}`;
+//   const rfLink = `${req.protocol}://${req.headers.host}/auth/refreshEmail/${token}`;
+//   const message = `<!DOCTYPE html>
+//     <html>
+//     <head>
+//         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"></head>
+//     <style type="text/css">
+//     body{background-color: #88BDBF;margin: 0px;}
+//     </style>
+//     <body style="margin:0px;">
+//     <table border="0" width="50%" style="margin:auto;padding:30px;background-color: #F3F3F3;border:1px solid #630E2B;">
+//     <tr>
+//     <td>
+//     <table border="0" width="100%">
+//     <tr>
+//     <td>
+//     <h1>
+//         <img width="100px" src="https://res.cloudinary.com/ddajommsw/image/upload/v1670702280/Group_35052_icaysu.png"/>
+//     </h1>
+//     </td>
+//     <td>
+//     <p style="text-align: right;"><a href="http://localhost:4200/#/" target="_blank" style="text-decoration: none;">View In Website</a></p>
+//     </td>
+//     </tr>
+//     </table>
+//     </td>
+//     </tr>
+//     <tr>
+//     <td>
+//     <table border="0" cellpadding="0" cellspacing="0" style="text-align:center;width:100%;background-color: #fff;">
+//     <tr>
+//     <td style="background-color:#630E2B;height:100px;font-size:50px;color:#fff;">
+//     <img width="50px" height="50px" src="${process.env.logo}">
+//     </td>
+//     </tr>
+//     <tr>
+//     <td>
+//     <h1 style="padding-top:25px; color:#630E2B">Email Confirmation</h1>
+//     </td>
+//     </tr>
+//     <tr>
+//     <td>
+//     <p style="padding:0px 100px;">
+//     </p>
+//     </td>
+//     </tr>
+//     <tr>
+//     <td>
+//     <a href="${link}" style="margin:10px 0px 30px 0px;border-radius:4px;padding:10px 20px;border: 0;color:#fff;background-color:#630E2B; ">Verify Email address</a>
+//     </td>
+//     </tr>
+//     <tr>
+//     <td>
+//     <br>
+//     <br>
+//     <br>
+//     <br>
+//     <br>
+//     <br>
+//     <br>
+//     <br>
+//     <a href="${rfLink}" style="margin:10px 0px 30px 0px;border-radius:4px;padding:10px 20px;border: 0;color:#fff;background-color:#630E2B; ">Request new  email </a>
+//     </td>
+//     </tr>
+//     </table>
+//     </td>
+//     </tr>
+//     <tr>
+//     <td>
+//     <table border="0" width="100%" style="border-radius: 5px;text-align: center;">
+//     <tr>
+//     <td>
+//     <h3 style="margin-top:10px; color:#000">Stay in touch</h3>
+//     </td>
+//     </tr>
+//     <tr>
+//     <td>
+//     <div style="margin-top:20px;">
 
-    <a href="${process.env.facebookLink}" style="text-decoration: none;"><span class="twit" style="padding:10px 9px;color:#fff;border-radius:50%;">
-    <img src="https://res.cloudinary.com/ddajommsw/image/upload/v1670703402/Group35062_erj5dx.png" width="50px" hight="50px"></span></a>
-    
-    <a href="${process.env.instegram}" style="text-decoration: none;"><span class="twit" style="padding:10px 9px;color:#fff;border-radius:50%;">
-    <img src="https://res.cloudinary.com/ddajommsw/image/upload/v1670703402/Group35063_zottpo.png" width="50px" hight="50px"></span>
-    </a>
-    
-    <a href="${process.env.twitterLink}" style="text-decoration: none;"><span class="twit" style="padding:10px 9px;;color:#fff;border-radius:50%;">
-    <img src="https://res.cloudinary.com/ddajommsw/image/upload/v1670703402/Group_35064_i8qtfd.png" width="50px" hight="50px"></span>
-    </a>
+//     <a href="${process.env.facebookLink}" style="text-decoration: none;"><span class="twit" style="padding:10px 9px;color:#fff;border-radius:50%;">
+//     <img src="https://res.cloudinary.com/ddajommsw/image/upload/v1670703402/Group35062_erj5dx.png" width="50px" hight="50px"></span></a>
 
-    </div>
-    </td>
-    </tr>
-    </table>
-    </td>
-    </tr>
-    </table>
-    </body>
-    </html>`;
-  const info = await sendEmail({
-    to: decoded.email,
-    subject: "Confirmation-Email",
-    message,
-  });
-  if (!info) {
-    return next(new Error("Email rejected", { cause: 400 }));
-  }
-  return res.status(200).json({ message: "Go to confirm your email" });
-});
+//     <a href="${process.env.instegram}" style="text-decoration: none;"><span class="twit" style="padding:10px 9px;color:#fff;border-radius:50%;">
+//     <img src="https://res.cloudinary.com/ddajommsw/image/upload/v1670703402/Group35063_zottpo.png" width="50px" hight="50px"></span>
+//     </a>
+
+//     <a href="${process.env.twitterLink}" style="text-decoration: none;"><span class="twit" style="padding:10px 9px;;color:#fff;border-radius:50%;">
+//     <img src="https://res.cloudinary.com/ddajommsw/image/upload/v1670703402/Group_35064_i8qtfd.png" width="50px" hight="50px"></span>
+//     </a>
+
+//     </div>
+//     </td>
+//     </tr>
+//     </table>
+//     </td>
+//     </tr>
+//     </table>
+//     </body>
+//     </html>`;
+//   const info = await sendEmail({
+//     to: decoded.email,
+//     subject: "Confirmation-Email",
+//     message,
+//   });
+//   if (!info) {
+//     return next(new Error("Email rejected", { cause: 400 }));
+//   }
+//   return res.status(200).json({ message: "Go to confirm your email" });
+// });
 export const signin = asyncHandler(async (req, res, next) => {
   const { password } = req.body;
   const email = req.body.email.toLowerCase();
@@ -407,9 +408,9 @@ export const signin = asyncHandler(async (req, res, next) => {
   if (!user) {
     return next(new Error("In-valid this email", { cause: 404 }));
   }
-  if (!user.confirmEmail) {
-    return next(new Error("Confirm your email first", { cause: 400 }));
-  }
+  // if (!user.confirmEmail) {
+  //   return next(new Error("Confirm your email first", { cause: 400 }));
+  // }
   if (user.status == "blocked") {
     return next(new Error("your account is blocked", { cause: 400 }));
   }

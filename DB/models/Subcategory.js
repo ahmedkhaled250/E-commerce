@@ -29,7 +29,14 @@ const subcategorySchema = new Schema(
   },
   {
     timestamps: true,
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true },
   }
 );
+subcategorySchema.virtual("products", {
+  ref: "Product",
+  localField: "_id",
+  foreignField: "subcategoryId",
+});
 const subcategoryModel = model("Subcategory", subcategorySchema);
 export default subcategoryModel;

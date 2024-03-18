@@ -30,16 +30,16 @@ const router = Router();
 // );
 // router.get("/fail", authController.fail);
 router.post("/signup", validation(validators.signup), authController.signup);
-router.get(
-  "/confirmEmail/:token",
-  validation(validators.confirmEmail),
-  authController.confirmEmail
-);
-router.get(
-  "/refreshEmail/:token",
-  validation(validators.confirmEmail),
-  authController.refreshEmail
-);
+// router.get(
+//   "/confirmEmail/:token",
+//   validation(validators.confirmEmail),
+//   authController.confirmEmail
+// );
+// router.get(
+//   "/refreshEmail/:token",
+//   validation(validators.confirmEmail),
+//   authController.refreshEmail
+// );
 router.post("/signin", validation(validators.signin), authController.signin);
 router.patch(
   "/sendCode",

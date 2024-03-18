@@ -28,6 +28,11 @@ router.get(
   subcategoryController.subCategories
 );
 router.get(
+  "/subCategoryByCategoryId",
+  validation(validators.subCategoryByCategoryId),
+  subcategoryController.subCategoryByCategoryId
+);
+router.get(
   "/:id",
   validation(validators.getSubcategoryById),
   subcategoryController.getSubcategoryById

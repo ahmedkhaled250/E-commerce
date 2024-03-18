@@ -3,7 +3,7 @@ const paginate = ({ page = 1, size = 2 } = {}) => {
     page = 1;
   }
   if (size <= 0) {
-    size = 2;
+    size = 5;
   }
   const skip = (parseInt(page) - 1) * parseInt(size)
   return { limit: parseInt(size), skip };
