@@ -5,7 +5,7 @@ import { verifyToken } from "../utils/GenerateAndVerifyToken.js";
 export const roles = {
   User: "User",
   Admin: "Admin",
-  Accounting: "Accounting",
+  vendor: "vendor",
 };
 export const auth = (accessRoles = []) => {
   return asyncHandler(async (req, res, next) => {

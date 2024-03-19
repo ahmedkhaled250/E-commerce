@@ -9,9 +9,7 @@ const userSchema = new Schema(
       max: [20, "max length 2 char"],
       lowercase: true,
     },
-    email: {
-
-    },
+    email: {},
     password: String,
     phone: {
       type: String,
@@ -26,7 +24,7 @@ const userSchema = new Schema(
     role: {
       type: String,
       default: "User",
-      enum: ["User", "Admin", "Accounting"],
+      enum: ["User", "Admin", "vendor"],
     },
     accountType: {
       type: String,

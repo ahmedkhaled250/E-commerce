@@ -12,7 +12,6 @@ import {
 } from "../../../../DB/DBMethods.js";
 import {
   generateToken,
-  verifyToken,
 } from "../../../utils/GenerateAndVerifyToken.js";
 import { compare, encrypt, hash } from "../../../utils/HashAndCompare.js";
 // export const fail = asyncHandler(async (req, res, next) => {
