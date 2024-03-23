@@ -15,7 +15,7 @@ export const signup = joi
     }),
     password: generalFields.password,
     cPassword: generalFields.cPassword.valid(joi.ref("password")),
-    phone: joi.string().pattern(/^01[0125][0-9]{8}$/),
+    phone: joi.string(),
     role: joi.string(),
     gender: joi.string(),
     address: joi.string(),
