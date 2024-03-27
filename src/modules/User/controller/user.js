@@ -279,10 +279,10 @@ export const getUserById = asyncHandler(async (req, res, next) => {
     model: userModel,
     condition: { _id: id, status: { $ne: "blocked" } },
   });
-  if (user.phone) user.phone = decrypt({ encryptedPhone: user.phone });
   if (!user) {
     return next(new Error("In-valid user", { cause: 404 }));
   }
+  if (user.phone) user.phone = decrypt({ encryptedPhone: user.phone });
   return res.status(200).json({ message: "Done", user });
 });
 export const users = asyncHandler(async (req, res, next) => {
