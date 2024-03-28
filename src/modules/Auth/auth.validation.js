@@ -20,6 +20,7 @@ export const signup = joi
     gender: joi.string(),
     address: joi.string(),
     DOB: joi.date(),
+    authorization: joi.string(),
   })
   .required();
 export const signin = joi
@@ -31,11 +32,13 @@ export const signin = joi
       "string.email": "please enter realy email",
     }),
     password: generalFields.password,
+    authorization: joi.string(),
   })
   .required();
 export const confirmEmail = joi
   .object({
     token: joi.string().required(),
+    authorization: joi.string(),
   })
   .required();
 export const sendCode = joi
@@ -46,6 +49,7 @@ export const sendCode = joi
       "string.base": "only string is allowed",
       "string.email": "please enter realy email",
     }),
+    authorization: joi.string(),
   })
   .required();
 export const forgetPassword = joi
@@ -59,5 +63,6 @@ export const forgetPassword = joi
     code: joi.number().required(),
     password: generalFields.password,
     cPassword: generalFields.cPassword.valid(joi.ref("password")),
+    authorization: joi.string(),
   })
   .required();
