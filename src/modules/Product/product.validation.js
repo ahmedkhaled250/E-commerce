@@ -11,7 +11,7 @@ export const createProduct = joi
       "string.empty": "not allowed to be empty",
       "string.base": "only string is allowed",
     }),
-    size: joi.array(),
+    size: joi.array().allow("ss", "s", "m", "l", "xl", "xxl", ""),
     colors: joi.array(),
     stock: joi.number().required(),
     price: joi.number().min(1).required(),

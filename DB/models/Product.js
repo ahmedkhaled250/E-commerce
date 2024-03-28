@@ -15,7 +15,7 @@ const productSchema = new Schema(
     colors: [String],
     size: {
       type: [String],
-      enum: ["ss", "s", "m", "l", "xl", "xxl"],
+      enum: ["ss", "s", "m", "l", "xl", "xxl",""],
     },
     stock: {
       type: Number,
