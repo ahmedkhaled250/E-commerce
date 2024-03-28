@@ -72,6 +72,8 @@ export const Headers = joi
 export const products = joi
   .object({
     ...validateQuery,
+    authorization: joi.string(),
+
   })
   .required();
 export const myProducts = joi
@@ -83,17 +85,20 @@ export const myProducts = joi
 export const getProductById = joi
   .object({
     id: generalFields.id,
+    authorization: joi.string(),
   })
   .required();
 export const productsOfSpecificSubcategory = joi
   .object({
     ...validateQuery,
+    authorization: joi.string(),
     subCategoryId: generalFields.id,
   })
   .required();
 export const productsOfSpecificCategory = joi
   .object({
     ...validateQuery,
+    authorization: joi.string(),
     categoryId: generalFields.id,
   })
   .required();

@@ -17,11 +17,13 @@ export const updateBrand = joi
   .required()
 export const brands = joi
   .object({
-    ...validateQuery
+    ...validateQuery,
+    authorization: joi.string(),
   })
   .required()
 export const getBrandById = joi
   .object({
+    authorization:joi.string(),
     id: generalFields.id,
   })
   .required()

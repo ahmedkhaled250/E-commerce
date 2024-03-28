@@ -21,10 +21,14 @@ export const categories = joi
   .object({
     page: joi.number(),
     size: joi.number(),
+    authorization: joi.string(),
+
   })
   .required()
 export const getCategoryById = joi
   .object({
     id: joi.string().required(),
+    authorization: joi.string(),
+
   })
   .required()

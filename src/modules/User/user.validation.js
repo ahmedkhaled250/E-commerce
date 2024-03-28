@@ -54,5 +54,6 @@ export const blockUser = joi
 export const getUserById = joi
   .object({
     id: generalFields.id,
+    authorization: joi.string(),
   })
   .required()

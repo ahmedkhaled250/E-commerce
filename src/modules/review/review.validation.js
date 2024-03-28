@@ -28,11 +28,13 @@ export const productId = joi
   .object({
     ...validateQuery,
     productId: generalFields.id,
+    authorization: joi.string(),
   })
   .required();
 export const review = joi
   .object({
     productId: generalFields.id,
+    authorization: joi.string(),
     id: generalFields.id,
   })
   .required();
