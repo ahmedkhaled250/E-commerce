@@ -4,8 +4,10 @@ import { fileValidation, myMulter } from "../../utils/multer.js";
 import endPoint from "./brand.endpoints.js";
 import * as validators from "./brand.validation.js";
 import * as brandController from "./controller/brand.js";
+import productRouter from "../Product/product.router.js"
 import { Router } from "express";
 const router = Router();
+router.use("/brandId/product", productRouter)
 router.post(
   "/",
   myMulter(fileValidation.image).single("image"),

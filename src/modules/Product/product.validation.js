@@ -102,3 +102,10 @@ export const productsOfSpecificCategory = joi
     categoryId: generalFields.id,
   })
   .required();
+export const productsOfSpecificBrand = joi
+  .object({
+    ...validateQuery,
+    authorization: joi.string(),
+    brandId: generalFields.id,
+  })
+  .required();

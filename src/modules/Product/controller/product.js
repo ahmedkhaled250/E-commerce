@@ -604,3 +604,45 @@ export const productsOfSpecificCategory = asyncHandler(
     return res.status(200).json({ message: "Done", products });
   }
 );
+export const productsOfSpecificBrand = asyncHandler(
+  async (req, res, next) => {
+    const { brandId } = req.params;
+    const populate = [
+      {
+        path: "createdBy",
+        select: "userName email image",
+      },
+      {
+        path: "categoryId",
+        select: "name image",
+      },
+      {
+        path: "subcategoryId",
+        select: "name image",
+      },
+      {
+        path: "brandId",
+        select: "name image",
+      },
+      {
+        path: "review",
+        select: "rating message userId",
+        populate: { path: "userId", select: "userName email image " },
+      },
+    ];
+    const apiFeature = new ApiFeatures(
+      req.query,
+      productModel.find({ brandId }).populate(populate)
+    )
+      .filter()
+      .paginate()
+      .sort()
+      .select()
+      .search();
+    const products = await apiFeature.mongooseQuery;
+    if (!products.length) {
+      return next(new Error("In-valid products", { cause: 404 }));
+    }
+    return res.status(200).json({ message: "Done", products });
+  }
+);

@@ -62,6 +62,11 @@ router.get(
   productController.productsOfSpecificCategory
 );
 router.get(
+  "/productsOfSpecificBrand",
+  validation(validators.productsOfSpecificBrand),
+  productController.productsOfSpecificBrand
+);
+router.get(
   "/:id",
   validation(validators.getProductById),
   productController.getProductById

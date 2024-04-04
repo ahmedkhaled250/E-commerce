@@ -21,10 +21,15 @@ export const auth = (accessRoles = []) => {
     if (!decoded?.id) {
       return next(new Error("In-valid token payload", { cause: 400 }));
     }
+    const populate = [{
+      path: "wishList",
+      select: "name price finalPrice mainImage"
+    }]
     const user = await findById({
       model: userModel,
       condition: decoded.id,
       select: "-password",
+      populate
     });
     if (!user) {
       return next(new Error("In-valid user", { cause: 404 }));
