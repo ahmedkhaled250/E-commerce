@@ -92,7 +92,7 @@ export const productsOfSpecificSubcategory = joi
   .object({
     ...validateQuery,
     authorization: joi.string(),
-    subCategoryId: generalFields.id,
+    subcategoryId: generalFields.id,
   })
   .required();
 export const productsOfSpecificCategory = joi

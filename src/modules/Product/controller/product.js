@@ -377,6 +377,10 @@ export const products = async (req, res, next) => {
       select: "userName email image",
     },
     {
+      path: "wishUserList",
+      select: "userName email image",
+    },
+    {
       path: "categoryId",
       select: "name image",
     },
@@ -414,6 +418,10 @@ export const MyProducts = asyncHandler(async (req, res, next) => {
   const populate = [
     {
       path: "createdBy",
+      select: "userName email image",
+    },
+    {
+      path: "wishUserList",
       select: "userName email image",
     },
     {
@@ -493,6 +501,10 @@ export const getMyProductById = asyncHandler(async (req, res, next) => {
       select: "userName email image",
     },
     {
+      path: "wishUserList",
+      select: "userName email image",
+    },
+    {
       path: "categoryId",
       select: "name image",
     },
@@ -526,6 +538,10 @@ export const productsOfSpecificSubcategory = asyncHandler(
     const populate = [
       {
         path: "createdBy",
+        select: "userName email image",
+      },
+      {
+        path: "wishUserList",
         select: "userName email image",
       },
       {
@@ -571,6 +587,10 @@ export const productsOfSpecificCategory = asyncHandler(
         select: "userName email image",
       },
       {
+        path: "wishUserList",
+        select: "userName email image",
+      },
+      {
         path: "categoryId",
         select: "name image",
       },
@@ -610,6 +630,10 @@ export const productsOfSpecificBrand = asyncHandler(
     const populate = [
       {
         path: "createdBy",
+        select: "userName email image",
+      },
+      {
+        path: "wishUserList",
         select: "userName email image",
       },
       {

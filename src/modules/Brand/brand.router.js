@@ -7,7 +7,7 @@ import * as brandController from "./controller/brand.js";
 import productRouter from "../Product/product.router.js"
 import { Router } from "express";
 const router = Router();
-router.use("/brandId/product", productRouter)
+router.use("/:brandId/product", productRouter)
 router.post(
   "/",
   myMulter(fileValidation.image).single("image"),

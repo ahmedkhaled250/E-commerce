@@ -9,7 +9,7 @@ import cartRouter from "./Cart/cart.router.js";
 import orderRouter from "./order/order.router.js";
 import reviewRouter from "./review/review.router.js";
 // import passport from "passport";
-import session from "express-session";
+// import session from "express-session";
 import morgan from "morgan";
 import { globalError } from "../utils/errorHandling.js";
 import cors from "cors";

@@ -144,7 +144,7 @@ export const subCategories = asyncHandler(async (req, res, next) => {
       select: "name image",
     },
     {
-      path: "Product",
+      path: "products",
       select: "name mainImage description stock price discound finalPrice",
     },
   ];
@@ -203,7 +203,7 @@ export const getSubcategoryById = asyncHandler(async (req, res, next) => {
       select: "name image",
     },
     {
-      path: "Product",
+      path: "products",
       select: "name mainImage description stock price discound finalPrice",
     },
   ];

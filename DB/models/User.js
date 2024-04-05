@@ -62,7 +62,14 @@ const userSchema = new Schema(
   },
   {
     timestamps: true,
+    // toJSON: { virtuals: true },
+    // toObject: { virtuals: true },
   }
 );
+// userSchema.virtual("wishUserList", {
+//   ref: "Product",
+//   localField: "_id",
+//   foreignField: "wishUserList",
+// });
 const userModel = model("User", userSchema);
 export default userModel;
