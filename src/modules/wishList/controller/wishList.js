@@ -29,6 +29,7 @@ export const remove = asyncHandler(async (req, res, next) => {
     return next(new Error("Your account is stopped", { cause: 400 }));
   }
   if (!user.wishList.includes(productId)) {
+    console.log(user.wishList,productId);
     return next(
       new Error("Already, In-valid product ID in your wishList", { cause: 404 })
     );

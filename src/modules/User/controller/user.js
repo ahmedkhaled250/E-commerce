@@ -270,8 +270,13 @@ export const blockUser = asyncHandler(async (req, res, next) => {
 });
 export const profile = asyncHandler(async (req, res, next) => {
   const { user } = req;
-  if (user.phone) user.phone = decrypt({ encryptedPhone: user.phone });
-  return res.status(200).json({ message: "Done", user });
+  const populate = [{
+    path: "wishList",
+    select: "name price finalPrice mainImage"
+  }]
+  const userWishList = await findById({ model: userModel, condition: user._id, populate })
+  if (userWishList.phone) userWishList.phone = decrypt({ encryptedPhone: userWishList.phone });
+  return res.status(200).json({ message: "Done", user: userWishList });
 });
 export const getUserById = asyncHandler(async (req, res, next) => {
   const { id } = req.params;
