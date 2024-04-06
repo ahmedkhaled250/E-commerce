@@ -1,4 +1,4 @@
-import { findById, findOne, updateOne } from "../../../../DB/DBMethods.js";
+import { findById, findByIdAndUpdate, findOne, updateOne } from "../../../../DB/DBMethods.js";
 import productModel from "../../../../DB/models/Product.js";
 import userModel from "../../../../DB/models/User.js";
 import { asyncHandler } from "../../../utils/errorHandling.js";
@@ -15,11 +15,15 @@ export const add = asyncHandler(async (req, res, next) => {
   if (!product) {
     return next(new Error("In-valid product ID", { cause: 404 }));
   }
-  const updateUser = await updateOne({
+  const updateUser = await findByIdAndUpdate({
     model: userModel,
-    condition: { _id: user._id },
+    condition: user._id,
     data: { $addToSet: { wishList: product._id } },
+    option: { new: true }
+
   });
+  console.log(updateUser);
+
   return res.status(200).json({ message: "Done", numberOfWishList: updateUser.wishList.length });
 });
 export const remove = asyncHandler(async (req, res, next) => {
@@ -34,10 +38,12 @@ export const remove = asyncHandler(async (req, res, next) => {
       new Error("Already, In-valid product ID in your wishList", { cause: 404 })
     );
   }
-  const updateUser = await updateOne({
+  const updateUser = await findByIdAndUpdate({
     model: userModel,
-    condition: { _id: user._id },
+    condition: user._id,
     data: { $pull: { wishList: productId } },
+    option: { new: true }
   });
+  console.log(updateUser);
   return res.status(200).json({ message: "Done", numberOfWishList: updateUser.wishList.length });
 });
