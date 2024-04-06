@@ -15,12 +15,12 @@ export const add = asyncHandler(async (req, res, next) => {
   if (!product) {
     return next(new Error("In-valid product ID", { cause: 404 }));
   }
-  await updateOne({
+  const updateUser = await updateOne({
     model: userModel,
     condition: { _id: user._id },
     data: { $addToSet: { wishList: product._id } },
   });
-  return res.status(200).json({ message: "Done" });
+  return res.status(200).json({ message: "Done", numberOfWishList: updateUser.wishList.length });
 });
 export const remove = asyncHandler(async (req, res, next) => {
   const { user } = req;
@@ -29,15 +29,15 @@ export const remove = asyncHandler(async (req, res, next) => {
     return next(new Error("Your account is stopped", { cause: 400 }));
   }
   if (!user.wishList.includes(productId)) {
-    console.log(user.wishList,productId);
+    console.log(user.wishList, productId);
     return next(
       new Error("Already, In-valid product ID in your wishList", { cause: 404 })
     );
   }
-  await updateOne({
+  const updateUser = await updateOne({
     model: userModel,
     condition: { _id: user._id },
     data: { $pull: { wishList: productId } },
   });
-  return res.status(200).json({ message: "Done" });
+  return res.status(200).json({ message: "Done", numberOfWishList: updateUser.wishList.length });
 });
