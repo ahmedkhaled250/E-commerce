@@ -37,9 +37,10 @@ export const addtoCart = asyncHandler(async (req, res, next) => {
   });
   if (!findCart) {
     // add new cart
+    const products = [{ productId, quantity }]
     const cart = await create({
       model: cartModel,
-      data: { userId: user._id, products: [{ productId, quantity }] },
+      data: { userId: user._id, products },
     });
     if (!cart) {
       return next(new Error("Fail to create cart", { cause: 400 }));
@@ -140,5 +141,7 @@ export const getMyCart = asyncHandler(async (req, res, next) => {
   if (!cart) {
     return next(new Error("In-valid cart", { cause: 404 }));
   }
-  return res.status(200).json({ message: "Done", cart });
+  const finalCart = cart.toObject()
+  finalCart.numberOfProducts = finalCart.products.length
+  return res.status(200).json({ message: "Done", cart: finalCart });
 });
