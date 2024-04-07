@@ -60,15 +60,16 @@ export const addtoCart = asyncHandler(async (req, res, next) => {
   if (!match) {
     findCart.products.push({ productId, quantity });
   }
-  const updateCart = await findOneAndUpdate({
+  const cart = await findOneAndUpdate({
     model: cartModel,
     condition: { userId: user._id },
     data: { products: findCart.products },
+    option: { new: true }
   });
-  if (!updateCart) {
+  if (!cart) {
     return next(new Error("Fail to addtoCart", { cause: 400 }));
   }
-  return res.status(200).json({ message: "Done" });
+  return res.status(200).json({ message: "Done", numberOfProducts: cart.products.length });
 });
 export const deleteFromCart = asyncHandler(async (req, res, next) => {
   const { user } = req;
