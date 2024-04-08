@@ -427,7 +427,7 @@ export const signin = asyncHandler(async (req, res, next) => {
   });
   user.status = "online";
   await user.save();
-  return res.status(200).json({ message: "Done", token, refresh_token });
+  return res.status(200).json({ message: "Done", token, refresh_token, role: user.role });
 });
 export const sendCode = asyncHandler(async (req, res, next) => {
   const email = req.body.email.toLowerCase();
