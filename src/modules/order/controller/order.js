@@ -153,8 +153,8 @@ export const addOrder = asyncHandler(async (req, res, next) => {
       payment_method_types: ["card"],
       mode: "payment",
       customer_email: user.email,
-      cancel_url: `${process.env.CENCEL_URL}/${order._id}`,
-      success_url: `${process.env.SUCCESS_URL}/${order._id}`,
+      cancel_url: `${process.env.CENCEL_URL}`,
+      success_url: `${process.env.SUCCESS_URL}`,
       metadata: { orderId: order._id.toString() },
       discounts: req.body.couponId ? [{ coupon: req.body.couponId }] : [],
       line_items: order.products.map((product) => {
