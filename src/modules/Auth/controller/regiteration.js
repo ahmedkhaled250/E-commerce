@@ -253,8 +253,7 @@ export const signup = asyncHandler(async (req, res, next) => {
       DOB,
     },
   });
-  return res.status(201).redirect()
-  // return res.status(201).json({ message: "Done", userId: newUser._id });
+  return res.status(201).json({ message: "Done", userId: newUser._id });
 });
 // export const confirmEmail = asyncHandler(async (req, res, next) => {
 //   const { token } = req.params;
