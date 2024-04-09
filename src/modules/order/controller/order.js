@@ -77,7 +77,7 @@ export const addOrder = asyncHandler(async (req, res, next) => {
     subtotalPrice - subtotalPrice * ((req.body.coupon?.amount || 0) / 100);
   req.body.userId = user._id;
   req.body.status = paymentMethod == "card" ? "waitPayment" : "placed";
-  req.body.date = new Date
+  req.body.date = new Date().getDay()
   const order = await create({ model: orderModel, data: req.body });
   if (!order) {
     return next(new Error("Fail to add order", { cause: 400 }));
@@ -154,7 +154,7 @@ export const addOrder = asyncHandler(async (req, res, next) => {
       mode: "payment",
       customer_email: user.email,
       cancel_url: `${process.env.CENCEL_URL}`,
-      success_url: `${process.env.SUCCESS_URL}`,
+      success_url: `http://localhost:4200/#/allorders`,
       metadata: { orderId: order._id.toString() },
       discounts: req.body.couponId ? [{ coupon: req.body.couponId }] : [],
       line_items: order.products.map((product) => {
