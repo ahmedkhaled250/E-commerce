@@ -77,6 +77,7 @@ export const addOrder = asyncHandler(async (req, res, next) => {
     subtotalPrice - subtotalPrice * ((req.body.coupon?.amount || 0) / 100);
   req.body.userId = user._id;
   req.body.status = paymentMethod == "card" ? "waitPayment" : "placed";
+  req.body.date = new Date
   const order = await create({ model: orderModel, data: req.body });
   if (!order) {
     return next(new Error("Fail to add order", { cause: 400 }));
@@ -299,3 +300,6 @@ export const webhook = asyncHandler(async (req, res, next) => {
   });
   return res.status(200).json({ message: "Done" });
 });
+
+
+
