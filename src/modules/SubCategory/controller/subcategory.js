@@ -217,7 +217,7 @@ export const getSubcategoryById = asyncHandler(async (req, res, next) => {
   }
   return res.status(200).json({ message: "Done", subcategory });
 });
-export const mySubcategory = asyncHandler(async (req, res, next) => {
+export const mySubcategories = asyncHandler(async (req, res, next) => {
   const { user } = req;
   const populate = [
     {

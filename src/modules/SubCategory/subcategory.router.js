@@ -33,10 +33,10 @@ router.get(
   subcategoryController.subCategoryByCategoryId
 );
 router.get(
-  "/mySubcategory",
-  validation(validators.mySubcategory),
+  "/mySubcategories",
+  validation(validators.mySubcategories),
   auth(endPoint.Admin),
-  subcategoryController.mySubcategory
+  subcategoryController.mySubcategories
 );
 router.get(
   "/:id",
