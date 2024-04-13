@@ -160,7 +160,7 @@ export const subCategories = asyncHandler(async (req, res, next) => {
   return res.status(200).json({ message: "Done", subCategories });
 });
 export const subCategoryByCategoryId = asyncHandler(async (req, res, next) => {
-  const {categoryId}=req.params
+  const { categoryId } = req.params
   const { skip, limit } = paginate({
     page: req.query.page,
     size: req.query.size,
@@ -181,7 +181,7 @@ export const subCategoryByCategoryId = asyncHandler(async (req, res, next) => {
   ];
   const subCategories = await find({
     model: subcategoryModel,
-    condition:{categoryId},
+    condition: { categoryId },
     populate,
     skip,
     limit,
@@ -236,7 +236,7 @@ export const mySubcategory = asyncHandler(async (req, res, next) => {
   const subcategory = await find({
     model: subcategoryModel,
     populate,
-    condition: { createdBy :user._id},
+    condition: { createdBy: user._id },
   });
   if (!subcategory.length) {
     return next(new Error("In-valid subcategory", { cause: 404 }));
