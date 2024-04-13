@@ -35,6 +35,7 @@ router.get(
 router.get(
   "/mySubcategory",
   validation(validators.mySubcategory),
+  auth(endPoint.Admin),
   subcategoryController.mySubcategory
 );
 router.get(
