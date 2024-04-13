@@ -48,6 +48,7 @@ export const updateProduct = joi
     colors: joi.array(),
     size: joi.array(),
     imageId: joi.string(),
+    replacSubImages: joi.boolean(),
     file: joi.object({
       mainImage: joi.array().items(generalFields.file).max(1),
       subImages: joi.array().items(generalFields.file).max(5).min(1),
