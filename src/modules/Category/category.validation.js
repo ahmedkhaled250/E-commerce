@@ -32,3 +32,8 @@ export const getCategoryById = joi
 
   })
   .required()
+export const myCategories = joi
+  .object({
+    authorization: generalFields.headers,
+  })
+  .required()

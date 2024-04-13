@@ -41,3 +41,8 @@ export const getSubcategoryById = joi
 
   })
   .required()
+export const mySubcategory = joi
+  .object({
+    authorization: generalFields.headers,
+  })
+  .required()

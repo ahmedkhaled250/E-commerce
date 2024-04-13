@@ -160,3 +160,25 @@ export const getCategoryById = asyncHandler(async (req, res, next) => {
   }
   return res.status(200).json({ message: "Done", category });
 });
+export const myCategories = asyncHandler(async (req, res, next) => {
+  const { user } = req.params;
+  const populate = [
+    {
+      path: "createdBy",
+      select: "userName email image",
+    },
+    {
+      path: "subcategory",
+      select: "name image",
+    },
+  ];
+  const category = await find({
+    model: categoryModel,
+    populate,
+    condition: { createdBy : user._id},
+  });
+  if (!category.length) {
+    return next(new Error("In-valid category", { cause: 404 }));
+  }
+  return res.status(200).json({ message: "Done", category });
+});

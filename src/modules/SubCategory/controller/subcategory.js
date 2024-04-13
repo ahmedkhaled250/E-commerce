@@ -217,3 +217,29 @@ export const getSubcategoryById = asyncHandler(async (req, res, next) => {
   }
   return res.status(200).json({ message: "Done", subcategory });
 });
+export const mySubcategory = asyncHandler(async (req, res, next) => {
+  const { user } = req;
+  const populate = [
+    {
+      path: "createdBy",
+      select: "userName email image",
+    },
+    {
+      path: "categoryId",
+      select: "name image",
+    },
+    {
+      path: "products",
+      select: "name mainImage description stock price discound finalPrice",
+    },
+  ];
+  const subcategory = await find({
+    model: subcategoryModel,
+    populate,
+    condition: { createdBy :user._id},
+  });
+  if (!subcategory.length) {
+    return next(new Error("In-valid subcategory", { cause: 404 }));
+  }
+  return res.status(200).json({ message: "Done", subcategory });
+});

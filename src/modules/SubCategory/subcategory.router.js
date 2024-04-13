@@ -37,4 +37,9 @@ router.get(
   validation(validators.getSubcategoryById),
   subcategoryController.getSubcategoryById
 );
+router.get(
+  "/mySubcategory",
+  validation(validators.mySubcategory),
+  subcategoryController.mySubcategory
+);
 export default router;

@@ -34,4 +34,10 @@ router.get(
   validation(validators.getCategoryById),
   categoryController.getCategoryById
 );
+router.get(
+  "/myCategories",
+  validation(validators.myCategories),
+  auth(endPoint.Admin),
+  categoryController.myCategories
+);
 export default router;
