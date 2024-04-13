@@ -52,6 +52,7 @@ export const updateProduct = joi
       mainImage: joi.array().items(generalFields.file).max(1),
       subImages: joi.array().items(generalFields.file).max(5).min(1),
     }),
+    id:generalFields.id,
     categoryId: generalFields.optionalId,
     subCategoryId: generalFields.optionalId,
     brandId: generalFields.optionalId,
