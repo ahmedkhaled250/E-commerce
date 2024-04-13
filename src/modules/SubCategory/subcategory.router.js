@@ -33,13 +33,14 @@ router.get(
   subcategoryController.subCategoryByCategoryId
 );
 router.get(
-  "/:id",
-  validation(validators.getSubcategoryById),
-  subcategoryController.getSubcategoryById
-);
-router.get(
   "/mySubcategory",
   validation(validators.mySubcategory),
   subcategoryController.mySubcategory
 );
+router.get(
+  "/:id",
+  validation(validators.getSubcategoryById),
+  subcategoryController.getSubcategoryById
+);
+
 export default router;

@@ -30,14 +30,15 @@ router.get(
   categoryController.categories
 );
 router.get(
-  "/:id",
-  validation(validators.getCategoryById),
-  categoryController.getCategoryById
-);
-router.get(
   "/myCategories",
   validation(validators.myCategories),
   auth(endPoint.Admin),
   categoryController.myCategories
 );
+router.get(
+  "/:id",
+  validation(validators.getCategoryById),
+  categoryController.getCategoryById
+);
+
 export default router;
