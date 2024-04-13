@@ -25,14 +25,15 @@ router.put(
 
 router.get("/", validation(validators.brands), brandController.brands);
 router.get(
-  "/:id",
-  validation(validators.getBrandById),
-  brandController.getBrandById
-);
-router.get(
   "/myBrands",
   validation(validators.getMyBrand),
   auth(endPoint.brand),
   brandController.getMyBrand
 );
+router.get(
+  "/:id",
+  validation(validators.getBrandById),
+  brandController.getBrandById
+);
+
 export default router;
