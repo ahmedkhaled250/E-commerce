@@ -3,6 +3,7 @@ import { asyncHandler } from "../../../utils/errorHandling.js";
 import cloudinary from "../../../utils/cloudinary.js";
 import {
   create,
+  find,
   findById,
   findOne,
   findOneAndUpdate,
@@ -150,4 +151,22 @@ export const getBrandById = asyncHandler(async (req, res, next) => {
     return next(new Error("In-valid brand", { cause: 404 }));
   }
   return res.status(200).json({ message: "Done", brand });
+});
+export const getMyBrand = asyncHandler(async (req, res, next) => {
+  const {user}=req
+  const populate = [
+    {
+      path: "createdBy",
+      select: "userName email image",
+    },
+  ];
+  const brands= await find({
+    model: brandModel,
+    populate,
+    condition: { createdBy:user._id },
+  });
+  if (!brands.length) {
+    return next(new Error("In-valid brand", { cause: 404 }));
+  }
+  return res.status(200).json({ message: "Done", brands });
 });

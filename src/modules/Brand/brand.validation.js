@@ -27,3 +27,8 @@ export const getBrandById = joi
     id: generalFields.id,
   })
   .required()
+export const getMyBrand = joi
+  .object({
+    authorization:generalFields.headers,
+  })
+  .required()

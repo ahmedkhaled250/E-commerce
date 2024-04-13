@@ -29,4 +29,10 @@ router.get(
   validation(validators.getBrandById),
   brandController.getBrandById
 );
+router.get(
+  "/myBrands",
+  validation(validators.getMyBrand),
+  auth(endPoint.brand),
+  brandController.getMyBrand
+);
 export default router;
