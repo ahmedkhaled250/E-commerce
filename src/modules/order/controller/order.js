@@ -154,7 +154,7 @@ export const addOrder = asyncHandler(async (req, res, next) => {
       mode: "payment",
       customer_email: user.email,
       cancel_url: `${process.env.CENCEL_URL}`,
-      success_url: `http://localhost:4200/#/allorders`,
+      success_url: `https://mostafa-dagher.github.io/GAZA-Store/#/allorders`,
       metadata: { orderId: order._id.toString() },
       discounts: req.body.couponId ? [{ coupon: req.body.couponId }] : [],
       line_items: order.products.map((product) => {
