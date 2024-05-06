@@ -400,7 +400,7 @@ export const products = async (req, res, next) => {
   ];
   const apiFeature = new ApiFeatures(
     req.query,
-    productModel.find({ deleted: false }).populate(populate)
+    productModel.find({ deleted: false}).populate(populate)
   )
     .paginate()
     .filter()

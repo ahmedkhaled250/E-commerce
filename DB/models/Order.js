@@ -65,7 +65,7 @@ const orderSchema = new Schema(
       default: "cash",
       enum: ["cash", "card"],
     },
-    date:Date
+    date: Date
   },
   {
     timestamps: true,

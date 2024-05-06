@@ -31,7 +31,7 @@ class ApiFeatures {
     );
     return this;
   };
-  sort = () => {
+  sort = () => { // 
     this.mongooseQuery.sort(this.queryData.sort?.replaceAll(",", " "));
     return this;
   };

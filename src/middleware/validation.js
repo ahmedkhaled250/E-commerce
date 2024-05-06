@@ -10,15 +10,6 @@ export const validateQuery = {
   page: joi.number(),
   size: joi.number(),
   sort: joi.string(),
-  stock: [joi.number(), joi.object()],
-  price: [joi.number(), joi.object()],
-  discound: [joi.number(), joi.object()],
-  finalPrice: [joi.number(), joi.object()],
-  soldItems: [joi.number(), joi.object()],
-  rating: [joi.number().min(1).max(5), joi.object()],
-  deleted: [joi.boolean()],
-  search: joi.string(),
-  fields: joi.string(),
 };
 export const generalFields = {
   email: joi

@@ -98,7 +98,7 @@ export const deleteFromCart = asyncHandler(async (req, res, next) => {
     );
   }
   await cart.save();
-  return res.status(200).json({ message: "Done",numberOfProducts:cart.products.length });
+  return res.status(200).json({ message: "Done", numberOfProducts: cart.products.length });
 });
 export const removeProductsFromCart = asyncHandler(async (req, res, next) => {
   const { user } = req;

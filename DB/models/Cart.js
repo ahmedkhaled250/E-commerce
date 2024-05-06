@@ -14,7 +14,6 @@ const cartSchema = new Schema(
           productId: {
             type: Types.ObjectId,
             ref: "Product",
-            unique: true,
           },
           quantity: Number,
         },

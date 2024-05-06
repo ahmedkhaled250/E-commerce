@@ -95,16 +95,16 @@ export const addOrder = asyncHandler(async (req, res, next) => {
     });
   }
   if (req.body.isCart) {
-    await updateOne({
-      model: cartModel,
-      condition: { userId: user._id },
-      data: { products: [] },
-    });
+    const cart = await findOne({ model: cartModel, condition: { userId: user._id } })
+    if (cart.products.length) {
+      cart.products = []
+    }
+    await cart.save()
   } else {
     await updateOne({
       model: cartModel,
       condition: { userId: user._id },
-      data: { $pull: { products: { productId: { $in: productsIds } } } },
+      data: { $pull: { products: { productId: { productsIds } } } },
     });
   }
   if (req.body.coupon) {

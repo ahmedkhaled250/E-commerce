@@ -9,7 +9,10 @@ const userSchema = new Schema(
       max: [20, "max length 2 char"],
       lowercase: true,
     },
-    email: {},
+    email: {
+      type: String,
+      lowercase: true,
+    },
     password: String,
     phone: {
       type: String,
