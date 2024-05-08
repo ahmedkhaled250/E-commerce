@@ -2,8 +2,12 @@ import { asyncHandler } from "../../../utils/errorHandling.js";
 // import { createInvoice } from "../../../utils/pdf.js";
 import {
   create,
+  deleteMany,
+  deleteOne,
   findByIdAndUpdate,
   findOne,
+  findOneAndDelete,
+  findOneAndUpdate,
   updateOne,
 } from "../../../../DB/DBMethods.js";
 import productModel from "../../../../DB/models/Product.js";
@@ -14,6 +18,7 @@ import ApiFeatures from "../../../utils/apiFeatures.js";
 import sendEmail from "../../../utils/sendEmail.js";
 import Stripe from "stripe";
 import payment from "../../../utils/payment.js";
+import productCartModel from "../../../../DB/models/ProductsOfCart.js";
 export const addOrder = asyncHandler(async (req, res, next) => {
   const { user } = req;
   const { couponName, paymentMethod } = req.body;
@@ -21,9 +26,16 @@ export const addOrder = asyncHandler(async (req, res, next) => {
     return next(new Error("Your account is deleted", { cause: 400 }));
   }
   if (!req.body.products) {
+    const populate = [
+      {
+        path: "products",
+        select: "productId quantity -_id",
+      },
+    ]
     const cart = await findOne({
       model: cartModel,
       condition: { userId: user._id },
+      populate
     });
     if (!cart?.products.length) {
       return next(new Error("Your cart is empty", { cause: 400 }));
@@ -95,17 +107,13 @@ export const addOrder = asyncHandler(async (req, res, next) => {
     });
   }
   if (req.body.isCart) {
-    const cart = await findOne({ model: cartModel, condition: { userId: user._id } })
-    if (cart.products.length) {
-      cart.products = []
-    }
-    await cart.save()
+    const cart = await findOneAndUpdate({ model: cartModel, condition: { userId: user._id }, data: { products: [] } })
+    await deleteMany({ model: productCartModel, condition: { cartId: cart._id } })
   } else {
-    await updateOne({
-      model: cartModel,
-      condition: { userId: user._id },
-      data: { $pull: { products: { productId: { productsIds } } } },
-    });
+    for (const productId of productsIds) {
+      const deleteProduct = await findOneAndDelete({ model: productCartModel, condition: { productId } })
+      await updateOne({ model: cartModel, condition: { userId: user._id }, data: { $pull: { products: deleteProduct._id } } })
+    }
   }
   if (req.body.coupon) {
     await findByIdAndUpdate({

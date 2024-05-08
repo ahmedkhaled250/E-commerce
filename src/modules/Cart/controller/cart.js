@@ -1,13 +1,17 @@
 import { asyncHandler } from "../../../utils/errorHandling.js";
 import {
   create,
+  deleteMany,
   findById,
+  findByIdAndDelete,
   findOne,
+  findOneAndDelete,
   findOneAndUpdate,
   updateOne,
 } from "../../../../DB/DBMethods.js";
 import cartModel from "../../../../DB/models/Cart.js";
 import productModel from "../../../../DB/models/Product.js";
+import productCartModel from "../../../../DB/models/ProductsOfCart.js";
 
 export const addtoCart = asyncHandler(async (req, res, next) => {
   const { user } = req;
@@ -16,14 +20,14 @@ export const addtoCart = asyncHandler(async (req, res, next) => {
     return next(new Error("Your account is deleted", { cause: 400 }));
   }
   // check product
-  const product = await findById({ model: productModel, condition: productId });
-  if (!product) {
+  const checkProduct = await findById({ model: productModel, condition: productId });
+  if (!checkProduct) {
     return next(new Error("In-valid this product", { cause: 404 }));
   }
-  if (product.deleted) {
+  if (checkProduct.deleted) {
     return next(new Error("This product is not available", { cause: 400 }));
   }
-  if (product.stock < quantity) {
+  if (checkProduct.stock < quantity) {
     await updateOne({
       model: productModel,
       condition: { _id: productId },
@@ -31,45 +35,50 @@ export const addtoCart = asyncHandler(async (req, res, next) => {
     });
     return next(new Error("This quantity is not available", { cause: 400 }));
   }
+  const populate = [
+    {
+      path: "products",
+    },
+  ]
   const findCart = await findOne({
     model: cartModel,
     condition: { userId: user._id },
+    populate
   });
   if (!findCart) {
     // add new cart
-    const products = [{ productId, quantity }]
     const cart = await create({
       model: cartModel,
-      data: { userId: user._id, products },
+      data: { userId: user._id, products: [] },
     });
-    if (!cart) {
-      return next(new Error("Fail to create cart", { cause: 400 }));
-    }
+    const product = await create({
+      model: productCartModel,
+      data: { cartId: cart._id, productId, quantity },
+    });
+    cart.products = [product._id]
+    await cart.save()
     return res.status(201).json({ message: "Done" });
   }
+  console.log(findCart);
   //update the product quantity inside the cart
   let match = false;
+  let finalCart;
+
   for (let i = 0; i < findCart.products.length; i++) {
     if (findCart.products[i].productId.toString() == productId) {
+      finalCart = findCart;
+
       match = true;
-      findCart.products[i].quantity = quantity;
+      await updateOne({ model: productCartModel, condition: { productId }, data: { quantity } })
       break;
     }
   }
   // push new product into cart
   if (!match) {
-    findCart.products.push({ productId, quantity });
+    const newProduct = await create({ model: productCartModel, data: { productId, quantity, cartId: findCart._id } })
+    finalCart = await findOneAndUpdate({ model: cartModel, condition: { _id: findCart._id }, data: { $push: { products: newProduct._id } }, option: { new: true } })
   }
-  const cart = await findOneAndUpdate({
-    model: cartModel,
-    condition: { userId: user._id },
-    data: { products: findCart.products },
-    option: { new: true }
-  });
-  if (!cart) {
-    return next(new Error("Fail to addtoCart", { cause: 400 }));
-  }
-  return res.status(200).json({ message: "Done", numberOfProducts: cart.products.length });
+  return res.status(200).json({ message: "Done", numberOfProducts: finalCart.products.length });
 });
 export const deleteFromCart = asyncHandler(async (req, res, next) => {
   const { user } = req;
@@ -77,17 +86,27 @@ export const deleteFromCart = asyncHandler(async (req, res, next) => {
   if (user.deleted) {
     return next(new Error("Your account is deleted", { cause: 400 }));
   }
-  const cart = await findOne({
+  const populate = [
+    {
+      path: "products",
+    },
+  ]
+  let cart = await findOne({
     model: cartModel,
     condition: { userId: user._id, _id: cartId },
+    populate
   });
   if (!cart) {
     return next(new Error("In-valid cart", { cause: 404 }));
   }
   let match = false;
   for (let i = 0; i < cart.products.length; i++) {
-    if (cart.products[i].productId.toString() == productId) {
-      cart.products.splice(i, 1);
+    if (cart.products[i].productId == productId) {
+      const deleteProduct = await findOneAndDelete({ model: productCartModel, condition: { productId } })
+      cart = await findOneAndUpdate({
+        model: cartModel, condition: { _id: cart._id }, data: { $pull: { products: deleteProduct._id } },
+        option: { new: true }
+      })
       match = true;
       break;
     }
@@ -97,7 +116,7 @@ export const deleteFromCart = asyncHandler(async (req, res, next) => {
       new Error("In-valid this product in your products", { cause: 400 })
     );
   }
-  await cart.save();
+  console.log(cart);
   return res.status(200).json({ message: "Done", numberOfProducts: cart.products.length });
 });
 export const removeProductsFromCart = asyncHandler(async (req, res, next) => {
@@ -115,13 +134,14 @@ export const removeProductsFromCart = asyncHandler(async (req, res, next) => {
   }
   if (cart.products.length) {
     cart.products = [];
+    await cart.save();
+    await deleteMany({ model: productCartModel, condition: { cartId: cart._id } })
+    return res.status(200).json({ message: "Done" });
   } else {
     return next(
       new Error("Already,You havn't any product in your cart", { cause: 400 })
     );
   }
-  await cart.save();
-  return res.status(200).json({ message: "Done" });
 });
 export const getMyCart = asyncHandler(async (req, res, next) => {
   const { user } = req;
@@ -131,7 +151,11 @@ export const getMyCart = asyncHandler(async (req, res, next) => {
       select: "userName email image",
     },
     {
-      path: "products.productId",
+      path: "products",
+      select: "productId quantity -_id",
+      populate: {
+        path: "productId",
+      }
     },
   ];
   const cart = await findOne({

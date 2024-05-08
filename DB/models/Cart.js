@@ -9,17 +9,9 @@ const cartSchema = new Schema(
       required: [true, "userId is required"],
     },
     products: {
-      type: [
-        {
-          productId: {
-            type: Types.ObjectId,
-            ref: "Product",
-          },
-          quantity: Number,
-        },
-      ],
-      required: [true, "products are required"],
-    },
+      type: [Types.ObjectId],
+      ref:"productCart"
+    }
   },
   {
     timestamps: true,

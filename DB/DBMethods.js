@@ -1,3 +1,4 @@
+
 export const find = async ({
   model,
   condition = {},
@@ -131,7 +132,7 @@ export const findOneAndDelete = async ({
   const result = await model
     .findOneAndDelete(condition)
     .select(select)
-    .populate(populate);
+    .populate(populate)
   return result;
 };
 export const deleteOne = async ({
